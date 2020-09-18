@@ -23,7 +23,8 @@ Text|Object[]|Object array used to contain text and images, could be renamed as 
 ReadText|Object[]|Array used to check if anything new has arrived
 
 ## Schedule
-### Initiating Contact
+### Communication
+#### Initiating Contact
 * Host has listening TCPListener
 * Client connects to Host's TCPListener
 * Both sides prepare DecryptProviders
@@ -36,3 +37,10 @@ ReadText|Object[]|Array used to check if anything new has arrived
 * Sender sends image size
 * Sender sends image encrypted with AES instead of RSA
 * Communications return to normal
+### GUI
+#### Update Contact list
+* Save selected index.
+* Clear list.
+* Run through list of contacts and add them to the list. Check if nickname is set, else use suitable replacement
+* Set selected index to last selected index.
+
