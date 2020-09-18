@@ -74,7 +74,7 @@ namespace SkolProjekt
 									var res = cryptoStream.BeginRead(buffer, 0, buffer.Length, null, cryptoStream);
 									var succes = res.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));//This keeps me up at night, please, make this better
 
-									Image image = byteArrayToImage(buffer.ToArray());
+									Image image = ByteArrayToImage(buffer.ToArray());
 									Values.Contacts[Values.HostContact].Log.Text.Add(image);
 
 								}
@@ -177,7 +177,7 @@ namespace SkolProjekt
 							var res = cryptoStream.BeginRead(buffer, 0, buffer.Length, null, cryptoStream);
 							var succes = res.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));
 
-							Image image = byteArrayToImage(buffer.ToArray());
+							Image image = ByteArrayToImage(buffer.ToArray());
 							Values.Contacts[(int)Contact].Log.Text.Add(image);
 
 						}
@@ -229,7 +229,7 @@ namespace SkolProjekt
 				}
 			}
 		}
-		public static Image byteArrayToImage(byte[] byteArrayIn)
+		public static Image ByteArrayToImage(byte[] byteArrayIn)
 		{
 			MemoryStream ms = new MemoryStream(byteArrayIn);
 			Image returnImage = Image.FromStream(ms);

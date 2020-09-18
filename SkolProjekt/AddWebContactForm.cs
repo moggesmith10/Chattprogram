@@ -19,10 +19,10 @@ namespace SkolProjekt
         private void Btn_AddWebContact_Click(object sender, EventArgs e)
         {
             Values.Contacts.Add(new Contact {
-                Server = inp_ServerName.Text,
                 Username = inp_Username.Text,
                 ConnectionType = 0,
             });
+
             Values.mainForm.ReloadContactsList();
             Values.mainForm.Activate();
             this.Close();

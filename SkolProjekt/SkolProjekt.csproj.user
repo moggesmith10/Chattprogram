@@ -8,6 +8,9 @@
     <Compile Update="AddWebContactForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

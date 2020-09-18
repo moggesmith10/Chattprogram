@@ -37,12 +37,14 @@
 			this.Tsm_ChangeUsername = new System.Windows.Forms.ToolStripMenuItem();
 			this.Tsm_StartHost = new System.Windows.Forms.ToolStripMenuItem();
 			this.Tsm_LogOn = new System.Windows.Forms.ToolStripMenuItem();
-			this.Tsm_Register = new System.Windows.Forms.ToolStripMenuItem();
 			this.Btn_ImageSend = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label1 = new System.Windows.Forms.Label();
 			this.pnl_Messages = new System.Windows.Forms.Panel();
+			this.lbl_Scroller = new System.Windows.Forms.Panel();
+			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
 			this.menuStrip1.SuspendLayout();
+			this.pnl_Messages.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// inp_Text
@@ -103,8 +105,7 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Tsm_ChangeUsername,
             this.Tsm_StartHost,
-            this.Tsm_LogOn,
-            this.Tsm_Register});
+            this.Tsm_LogOn});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -128,12 +129,6 @@
 			this.Tsm_LogOn.Name = "Tsm_LogOn";
 			this.Tsm_LogOn.Size = new System.Drawing.Size(56, 20);
 			this.Tsm_LogOn.Text = "Log on";
-			// 
-			// Tsm_Register
-			// 
-			this.Tsm_Register.Name = "Tsm_Register";
-			this.Tsm_Register.Size = new System.Drawing.Size(61, 20);
-			this.Tsm_Register.Text = "Register";
 			// 
 			// Btn_ImageSend
 			// 
@@ -161,10 +156,30 @@
 			// pnl_Messages
 			// 
 			this.pnl_Messages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnl_Messages.Controls.Add(this.lbl_Scroller);
+			this.pnl_Messages.Controls.Add(this.vScrollBar1);
 			this.pnl_Messages.Location = new System.Drawing.Point(231, 42);
 			this.pnl_Messages.Name = "pnl_Messages";
 			this.pnl_Messages.Size = new System.Drawing.Size(557, 364);
 			this.pnl_Messages.TabIndex = 1;
+			// 
+			// lbl_Scroller
+			// 
+			this.lbl_Scroller.Location = new System.Drawing.Point(-1, -1);
+			this.lbl_Scroller.Name = "lbl_Scroller";
+			this.lbl_Scroller.Size = new System.Drawing.Size(537, 364);
+			this.lbl_Scroller.TabIndex = 1;
+			// 
+			// vScrollBar1
+			// 
+			this.vScrollBar1.LargeChange = 12;
+			this.vScrollBar1.Location = new System.Drawing.Point(539, -1);
+			this.vScrollBar1.Maximum = 12;
+			this.vScrollBar1.Name = "vScrollBar1";
+			this.vScrollBar1.Size = new System.Drawing.Size(17, 364);
+			this.vScrollBar1.SmallChange = 6;
+			this.vScrollBar1.TabIndex = 0;
+			this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
 			// 
 			// MainForm
 			// 
@@ -183,9 +198,10 @@
 			this.Controls.Add(this.pnl_Messages);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
-			this.Text = "Form1";
+			this.Text = "Chat Program";
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.pnl_Messages.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -203,11 +219,11 @@
         private System.Windows.Forms.Button Btn_ImageSend;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Panel pnl_Messages;
 		private System.Windows.Forms.ToolStripMenuItem Tsm_StartHost;
 		private System.Windows.Forms.ToolStripMenuItem Tsm_LogOn;
-		private System.Windows.Forms.ToolStripMenuItem Tsm_Register;
+		private System.Windows.Forms.VScrollBar vScrollBar1;
+		private System.Windows.Forms.Panel lbl_Scroller;
 	}
 }
 

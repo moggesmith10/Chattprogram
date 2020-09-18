@@ -11,22 +11,22 @@ namespace SkolProjekt
     public static class Values
     {
         public static MainForm mainForm;
-        //public static List<WebContact> WebContacts;
-        //public static List<PrivateContact> PrivateContacts;
-        //public static List<TcpClient> currentConnections;
         public static TcpListener currentHost;
-        //public static Thread hostingThread;
-        //public static NetworkStream hostStream;
-        //public static List<Log> Logs; Replaced
         public static List<Contact> Contacts;
         public static int HostContact = -1;
+        public static string Token;
+        public static string Server;
+        public static string ownUsername;
+        public static bool logedIn = false;
+        public static WebManager webManager = new WebManager();
+        public static List<int> readMessages = new List<int>();
     }
 
     public class Log
     {
         public List<object> Text = new List<object>();
         public List<object> ReadText = new List<object>();//Past tense
-
+        
     }
     public class Contact
     {
@@ -38,6 +38,7 @@ namespace SkolProjekt
         //Public
         public string Server;
         public string Username;
+       
 
         //Private
         public IPAddress IP;

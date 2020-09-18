@@ -18,3 +18,4 @@ C:\Users\Morgan\source\repos\SkolProjekt\SkolProjekt\obj\Release\netcoreapp3.1\S
 C:\Users\Morgan\source\repos\SkolProjekt\SkolProjekt\obj\Release\netcoreapp3.1\SkolProjekt.UsernameRequestForm.resources
 C:\Users\Morgan\source\repos\SkolProjekt\SkolProjekt\obj\Release\netcoreapp3.1\SkolProjekt.MainForm.resources
 C:\Users\Morgan\source\repos\SkolProjekt\SkolProjekt\obj\Release\netcoreapp3.1\SkolProjekt.NewContactForm.resources
+C:\Users\Morgan\source\repos\SkolProjekt\SkolProjekt\obj\Release\netcoreapp3.1\SkolProjekt.LoginForm.resources

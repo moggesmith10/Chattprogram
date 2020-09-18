@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Unicode;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SkolProjekt
@@ -24,13 +14,13 @@ namespace SkolProjekt
 		int typeOfConnection; //0: Web, 1: Private, 2:Host
 
 		bool justRealoaded = false;//Very hacky. stops loop when selecting 
-								   //Stops loop since
-								   //Select index in list -->
-								   //Clear list -->
-								   //Select index again -->
-								   //List index has changed. Reload list if unread message is now read -->
-								   //Repeat
-								   //This adds a bool to stop at list index has changed
+									//Stops loop since
+									//Select index in list -->
+									//Clear list -->
+									//Select index again -->
+									//List index has changed. Reload list if unread message is now read -->
+									//Repeat
+									//This adds a bool to stop at list index has changed
 
 		List<object> logFiles = new List<object>();
 
@@ -45,15 +35,27 @@ namespace SkolProjekt
 			Values.mainForm = this;//Set form1 to this form, used when setting main form (this) to active
 			UpdateLog();
 
+			this.Resize += MainForm_Resize;
 			Tsm_ChangeUsername.Click += Tsm_ChangeUsername_Click;
 			Tsm_LogOn.Click += Tsm_LogOn_Click;
 			Tsm_StartHost.Click += Tsm_StartHost_Click;
-			Tsm_Register.Click += Tsm_Register_Click;
 		}
 
-		private void Tsm_Register_Click(object sender, EventArgs e)
+		private void MainForm_Resize(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			int messageWidth = this.Size.Width - list_Contact.Size.Width - 48;
+			int messageHeight = this.Size.Height - menuStrip1.Size.Height - 14 - 60 - inp_Text.Size.Height;
+			pnl_Messages.Size = new Size(messageWidth, messageHeight);
+
+			inp_Text.Location = new Point(231, Size.Height - 77);
+			inp_Text.Size = new Size(Size.Width - 421, 27);
+			btn_Send.Location = new Point(Size.Width - 103, Size.Height - 77);
+			Btn_ImageSend.Location = new Point(Size.Width - 184, Size.Height - 77);
+			list_Contact.Size = new Size(213, Size.Height - 125);
+			btn_ContactsAdd.Location = new Point(12, Size.Height - 77);
+			btn_ContactsRemove.Location = new Point(48, Size.Height - 77);
+			vScrollBar1.Location = new Point(pnl_Messages.Width-vScrollBar1.Width,0);
+			vScrollBar1.Height = pnl_Messages.Height;
 		}
 
 		private void Tsm_StartHost_Click(object sender, EventArgs e)
@@ -64,7 +66,9 @@ namespace SkolProjekt
 
 		private void Tsm_LogOn_Click(object sender, EventArgs e)
 		{
-			throw new NotImplementedException();
+			var loginForm = new LoginForm();
+			loginForm.Show();
+			loginForm.Activate();
 		}
 
 		private void Tsm_ChangeUsername_Click(object sender, EventArgs e)
@@ -92,7 +96,7 @@ namespace SkolProjekt
 				string name;
 				if (c.Name == "" && c.ConnectionType == 1)//If private connection and nameless, use IP as name
 					name = c.IP.ToString();
-				else if (c.Name == "" && c.ConnectionType == 0)//If web connection and nameless, use username
+				else if (c.Name == "" || c.Name == null && c.ConnectionType == 0)//If web connection and nameless, use username
 					name = c.Username;
 				else//else use name
 					name = c.Name;
@@ -130,7 +134,7 @@ namespace SkolProjekt
 		{
 			return string.Format("{0}: {1}", name, input);
 		}
-		public void AddToLog(string toLog, int side)
+		public void AddToLog(string toLog)
 		{
 			Values.Contacts[list_Contact.SelectedIndex].Log.Text.Add(toLog);
 			UpdateLog();
@@ -143,13 +147,19 @@ namespace SkolProjekt
 		/// <returns>true if succesful</returns>
 		private bool Send(string input)
 		{
-			if (list_Contact.SelectedIndex != -1 && list_Contact.SelectedIndex < Values.Contacts.Count)
+			if (list_Contact.SelectedIndex != -1 && list_Contact.SelectedIndex < Values.Contacts.Count && Values.Contacts[list_Contact.SelectedIndex].ConnectionType == 0)
+			{
+				_ = Values.webManager.SendMessage(input, Values.Contacts[list_Contact.SelectedIndex].Username);
+				return true;
+			}
+
+			else if (list_Contact.SelectedIndex != -1 && list_Contact.SelectedIndex < Values.Contacts.Count)
 			{
 				//Make sure we are connected before we send anything
 				if (Values.Contacts[list_Contact.SelectedIndex].Connected)
 				{
 					string formated = FormatText(input);
-					AddToLog(formated, 2);
+					AddToLog(formated);
 					byte[] encrypted = Encrypt(formated);
 					return SendPacket(encrypted);
 				}
@@ -190,11 +200,10 @@ namespace SkolProjekt
 		///</summary>
 		public void UpdateLog()
 		{
-			int yDisplace = 12;
+			int yDisplace = 12 + vScrollBar1.Value;
 			int xDisplace = 12;
 
-			if (list_Contact.SelectedIndex != -1)
-			{
+			if (logFiles != null)
 				foreach (object obj in logFiles)
 				{
 					if (obj is PictureBox pBox)
@@ -203,8 +212,10 @@ namespace SkolProjekt
 					else if (obj is Label lbl)
 						lbl.Dispose();
 				}
-				logFiles = new List<object>();
+			logFiles = new List<object>();
 
+			if (list_Contact.SelectedIndex != -1)
+			{
 				foreach (object obj in Values.Contacts[list_Contact.SelectedIndex].Log.Text)
 				{
 					if (obj is Image image)
@@ -218,7 +229,7 @@ namespace SkolProjekt
 						};
 						//img.SizeMode = PictureBoxSizeMode.StretchImage;
 						yDisplace += 50;
-						pnl_Messages.Controls.Add(img);
+						lbl_Scroller.Controls.Add(img);
 						logFiles.Add(img);
 					}
 					else
@@ -231,10 +242,24 @@ namespace SkolProjekt
 							Size = new Size(500, 20)
 						};
 						yDisplace += 20;
-						pnl_Messages.Controls.Add(lbl);
+						lbl_Scroller.Controls.Add(lbl);
 						logFiles.Add(lbl);
 					}
 				}
+				bool maxed = false;
+				if (vScrollBar1.Value >= vScrollBar1.Maximum - 16) //Margin of error
+					maxed = true;
+
+				vScrollBar1.Maximum = yDisplace - pnl_Messages.Height + 24;
+				if(vScrollBar1.Maximum < 0)
+				{
+					vScrollBar1.Maximum = 0;
+					vScrollBar1.Minimum = 0;
+				}
+
+				if (maxed)
+					vScrollBar1.Value = vScrollBar1.Maximum;
+				vScrollBar1_Scroll(new object(), new ScrollEventArgs(ScrollEventType.EndScroll, 0));
 
 				//tbx_Log.Text = Values.Contacts[list_Contact.SelectedIndex].Log.Text;
 				Values.Contacts[list_Contact.SelectedIndex].Log.ReadText = Values.Contacts[list_Contact.SelectedIndex].Log.Text;
@@ -248,10 +273,15 @@ namespace SkolProjekt
 					Visible = true,
 					Size = new Size(500, 20)
 				};
-				Values.mainForm.Controls.Add(lbl);
+				lbl_Scroller.Controls.Add(lbl);
 				logFiles.Add(lbl);
 			}
 		}
+		/// <summary>
+		/// When object in contacts list is changed
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void List_Contact_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (justRealoaded)
@@ -330,6 +360,12 @@ namespace SkolProjekt
 				imageIn.Save(ms, imageIn.RawFormat);
 				return ms.ToArray();
 			}
+		}
+
+		private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+		{
+			lbl_Scroller.Location = new Point(0, -vScrollBar1.Value);
+			lbl_Scroller.Size = new Size(pnl_Messages.Width - vScrollBar1.Width, pnl_Messages.Height + vScrollBar1.Maximum);
 		}
 	}
 }
