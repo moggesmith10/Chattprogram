@@ -189,7 +189,6 @@ namespace SkolProjekt
 			if (typeOfConnection > 0)
 			{
 				Values.Contacts[list_Contact.SelectedIndex].stream.Write(toSend);
-				//Values.Contacts[list_Contact.SelectedIndex].Log.Text += UTF8Encoding.UTF8.GetString(Values.Contacts[list_Contact.SelectedIndex].EncryptProvider.Decrypt(toSend, false));
 				return true;
 			}
 			return false;

@@ -22,7 +22,7 @@ namespace SkolProjekt
                 Username = inp_Username.Text,
                 ConnectionType = 0,
             });
-
+            Values.webManager.UsernameToContact.Add(inp_Username.Text, Values.Contacts.Count - 1);
             Values.mainForm.ReloadContactsList();
             Values.mainForm.Activate();
             this.Close();
@@ -33,5 +33,6 @@ namespace SkolProjekt
             Values.mainForm.Activate();
             this.Close();
         }
-    }
+
+	}
 }

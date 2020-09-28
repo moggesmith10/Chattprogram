@@ -99,6 +99,7 @@
 			this.Inp_Password.Name = "Inp_Password";
 			this.Inp_Password.Size = new System.Drawing.Size(372, 23);
 			this.Inp_Password.TabIndex = 6;
+			this.Inp_Password.UseSystemPasswordChar = true;
 			// 
 			// Btn_Login
 			// 

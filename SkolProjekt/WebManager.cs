@@ -14,7 +14,7 @@ namespace SkolProjekt
 	public class WebManager
 	{
 		HttpClient client = new HttpClient();
-		Dictionary<string, int> UsernameToContact = new Dictionary<string, int>();
+		public Dictionary<string, int> UsernameToContact = new Dictionary<string, int>();
 
 		public async Task SendMessage(string message, string reciever)
 		{
