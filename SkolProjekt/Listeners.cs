@@ -154,15 +154,7 @@ namespace SkolProjekt
 				buffer = c.DecryptProvider.Decrypt(buffer, false);
 				if (!RecievingImage(buffer, c))
 				{
-					string recieved = UTF8Encoding.UTF8.GetString(buffer);//Trim ending zeros
-																		  //TODO make variable packet size
-					Values.Contacts[Values.HostContact].Log.Text.Add(recieved);
-
-					Values.mainForm.inp_Text.Invoke((MethodInvoker)delegate//Threading stuff, makes it run across to main thread probably
-					{
-						Values.mainForm.UpdateLog();
-						Values.mainForm.ReloadContactsList();
-					});
+					RecieveText(c, buffer);
 				}
 			}
 			catch (Exception e)
@@ -170,6 +162,20 @@ namespace SkolProjekt
 
 			}
 		}
+
+		private static void RecieveText(Contact c, byte[] buffer)
+		{
+			string recieved = UTF8Encoding.UTF8.GetString(buffer);//Trim ending zeros
+																  //TODO make variable packet size
+			c.Log.Text.Add(recieved);
+
+			Values.mainForm.inp_Text.Invoke((MethodInvoker)delegate//Threading stuff, makes it run across to main thread probably
+			{
+				Values.mainForm.UpdateLog();
+				Values.mainForm.ReloadContactsList();
+			});
+		}
+
 		private static bool RecievingImage(byte[] buffer, Contact c)
 		{
 			if (StructuralComparisons.StructuralEqualityComparer.Equals(buffer, imagePrepper))
